@@ -1,0 +1,57 @@
+#Total Revenue (Overall)
+SELECT 
+    SUM(p.price * s.quantity) AS total_revenue
+FROM sales s
+JOIN products p ON s.product_id = p.product_id;
+
+#Monthly Sales Trend
+
+SELECT 
+    MONTH(s.order_date) AS month,
+    SUM(p.price * s.quantity) AS monthly_revenue
+FROM sales s
+JOIN products p ON s.product_id = p.product_id
+GROUP BY MONTH(s.order_date)
+ORDER BY month;
+
+#Top Products by Revenue
+
+SELECT 
+    p.product_name,
+    SUM(p.price * s.quantity) AS product_revenue
+FROM sales s
+JOIN products p ON s.product_id = p.product_id
+GROUP BY p.product_name
+ORDER BY product_revenue DESC;
+
+#Top Customers by Spending
+
+SELECT 
+    c.customer_name,
+    SUM(p.price * s.quantity) AS total_spent
+FROM sales s
+JOIN customers c ON s.customer_id = c.customer_id
+JOIN products p ON s.product_id = p.product_id
+GROUP BY c.customer_name
+ORDER BY total_spent DESC;
+
+#City-wise Revenue Analysis
+
+SELECT 
+    c.city,
+    SUM(p.price * s.quantity) AS city_revenue
+FROM sales s
+JOIN customers c ON s.customer_id = c.customer_id
+JOIN products p ON s.product_id = p.product_id
+GROUP BY c.city
+ORDER BY city_revenue DESC;
+
+#Category-wise Revenue
+
+SELECT 
+    p.category,
+    SUM(p.price * s.quantity) AS category_revenue
+FROM sales s
+JOIN products p ON s.product_id = p.product_id
+GROUP BY p.category
+ORDER BY category_revenue DESC;
